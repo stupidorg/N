@@ -13,7 +13,7 @@ const TitleBarWrapper = styled.div`
 
 const Center = styled.div`flex-grow: 1;`;
 
-module.exports = function TitleBar() {
+export default function TitleBar() {
   return (
     <TitleBarWrapper>
       <Center />
@@ -21,14 +21,14 @@ module.exports = function TitleBar() {
         <Button
           appearance="subtle-link"
           spacing="none"
-          iconBefore={<AddIcon size="small" />}
+          iconBefore={<AddIcon size="small" label="some label" />}
         />
         <Button
           appearance="subtle-link"
           spacing="none"
-          iconBefore={<ListIcon size="small" />}
+          iconBefore={<ListIcon size="small" label="some label" />}
         />
       </ButtonGroup>
     </TitleBarWrapper>
   );
-};
+}

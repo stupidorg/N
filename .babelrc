@@ -1,3 +1,4 @@
 {
-  "presets": [["env", { "targets": { "chrome": "59" } }], "react"]
+  "presets": [["env", { "targets": { "chrome": "59" } }], "react"],
+  "plugins": ["transform-class-properties"]
 }

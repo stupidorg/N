@@ -27,7 +27,7 @@ const EditorWrapper = styled.div`
   }
 `;
 
-module.exports = function Editor({ defaultValue, onChange }) {
+export default function Editor({ defaultValue, onChange }) {
   return (
     <EditorContext>
       <EditorWrapper>
@@ -47,4 +47,4 @@ module.exports = function Editor({ defaultValue, onChange }) {
       </EditorWrapper>
     </EditorContext>
   );
-};
+}
