@@ -15,10 +15,15 @@ module.exports = function App() {
   return (
     <StateProvider>
       <Container>
-        <TitleBar />
+        <WithState
+          render={(state, update) => (
+            <TitleBar onAction={action => update(action)} />
+          )}
+        />
         <WithState
           render={(state, update) => (
             <Editor
+              key={state.recentDocId}
               defaultValue={state.docs[state.recentDocId]}
               onChange={value => update(updateRecentDoc(value))}
             />

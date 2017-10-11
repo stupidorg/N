@@ -1,15 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-const Store = require("electron-store");
-const store = new Store();
+import Store from "electron-store";
+import { uuidv4 } from "../utils";
 
-function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
-  );
-}
+const store = new Store();
 
 export class StateProvider extends React.Component {
   static childContextTypes = {
@@ -29,22 +23,27 @@ export class StateProvider extends React.Component {
     const docId = uuidv4();
     return {
       recentDocId: docId,
-      docs: {
-        [docId]: {}
-      }
+      docs: { [docId]: "" }
     };
   }
 
   update = updater => {
     const state = updater(this.state.state);
-    store.set("state", state);
-    const consoleGroup = `State updated by: ${updater.name}`;
+    const consoleGroup =
+      state === this.state.state
+        ? `State updated skiped: ${updater.name}`
+        : `State updated by: ${updater.name}`;
+
     console.groupCollapsed(consoleGroup);
-    console.log("Updated: ", updater.name);
+    console.log("Updater: ", updater.name);
     console.log("Old State: ", this.state.state);
     console.log("New State: ", state);
     console.groupEnd(consoleGroup);
-    this.setState({ state });
+
+    if (state !== this.state.state) {
+      store.set("state", state);
+      this.setState({ state });
+    }
   };
 
   getChildContext() {
