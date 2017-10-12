@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Store from "electron-store";
-import { uuidv4 } from "../utils";
+import { uuidv4, createEmptyDocument } from "../utils";
 
 const store = new Store();
 
@@ -23,7 +23,7 @@ export class StateProvider extends React.Component {
     const docId = uuidv4();
     return {
       recentDocId: docId,
-      docs: { [docId]: "" }
+      docs: { [docId]: createEmptyDocument() }
     };
   }
 

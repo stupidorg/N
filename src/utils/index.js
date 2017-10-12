@@ -5,3 +5,19 @@ export function uuidv4() {
     ).toString(16)
   );
 }
+
+export function createEmptyDocument() {
+  return {
+    time: Date.now(),
+    size: 0,
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: []
+        }
+      ]
+    }
+  };
+}

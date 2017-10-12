@@ -27,6 +27,16 @@ const EditorWrapper = styled.div`
   }
 `;
 
+const contentTransformerProvider = () => ({
+  encode(doc) {
+    return {
+      content: doc.toJSON(),
+      time: Date.now(),
+      size: doc.textContent.length
+    };
+  }
+});
+
 export default function Editor({ defaultValue, onChange }) {
   return (
     <EditorContext>
@@ -38,9 +48,10 @@ export default function Editor({ defaultValue, onChange }) {
               allowLists={true}
               allowTasksAndDecisions={true}
               allowTextFormatting={true}
+              contentTransformerProvider={contentTransformerProvider}
               placeholder="Write some text..."
               onChange={() => actions.getValue().then(onChange)}
-              defaultValue={defaultValue}
+              defaultValue={defaultValue.content}
             />
           )}
         />

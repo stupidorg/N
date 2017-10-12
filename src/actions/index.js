@@ -1,4 +1,4 @@
-import { uuidv4 } from "../utils";
+import { uuidv4, createEmptyDocument } from "../utils";
 
 export function cloneState(state) {
   const newState = Object.assign({}, state);
@@ -17,7 +17,7 @@ export const createNewDoc = () =>
   function createNewDoc(state) {
     const newState = cloneState(state);
     const docId = uuidv4();
-    newState.docs[docId] = "";
+    newState.docs[docId] = createEmptyDocument();
     newState.recentDocId = docId;
     return newState;
   };
