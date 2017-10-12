@@ -3,7 +3,7 @@ import styled from "styled-components";
 import AddIcon from "@atlaskit/icon/glyph/add";
 import ListIcon from "@atlaskit/icon/glyph/list";
 import Button, { ButtonGroup } from "@atlaskit/button";
-import { createNewDoc } from "../actions";
+import { createNewDoc, switchToList } from "../actions";
 
 const TitleBarWrapper = styled.div`
   height: 26px;
@@ -29,6 +29,7 @@ export default function TitleBar({ onAction }) {
           appearance="subtle-link"
           spacing="none"
           iconBefore={<ListIcon size="small" label="some label" />}
+          onClick={() => onAction(switchToList())}
         />
       </ButtonGroup>
     </TitleBarWrapper>

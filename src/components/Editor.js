@@ -1,7 +1,10 @@
-const React = require("react");
-const styled = require("styled-components").default;
-const FabricEditor = require("@atlaskit/editor-core").Editor;
-const { EditorContext, WithEditorActions } = require("@atlaskit/editor-core");
+import React from "react";
+import styled from "styled-components";
+import {
+  Editor as FabricEditor,
+  EditorContext,
+  WithEditorActions
+} from "@atlaskit/editor-core";
 
 const EditorWrapper = styled.div`
   flex-grow: 1;
@@ -32,6 +35,7 @@ const contentTransformerProvider = () => ({
     return {
       content: doc.toJSON(),
       time: Date.now(),
+      textContent: doc.textContent,
       size: doc.textContent.length
     };
   }
@@ -48,6 +52,7 @@ export default function Editor({ defaultValue, onChange }) {
               allowLists={true}
               allowTasksAndDecisions={true}
               allowTextFormatting={true}
+              shouldFocus={true}
               contentTransformerProvider={contentTransformerProvider}
               placeholder="Write some text..."
               onChange={() => actions.getValue().then(onChange)}

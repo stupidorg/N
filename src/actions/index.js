@@ -19,5 +19,22 @@ export const createNewDoc = () =>
     const docId = uuidv4();
     newState.docs[docId] = createEmptyDocument();
     newState.recentDocId = docId;
+    newState.route = "edit";
+    return newState;
+  };
+
+export const switchTo = route =>
+  function switchTo(state) {
+    const newState = cloneState(state);
+    newState.route = route;
+    return newState;
+  };
+
+export const switchToList = () => switchTo("list");
+
+export const switchToEdit = docId =>
+  function switchToEdit(state) {
+    const newState = switchTo("edit")(state);
+    newState.recentDocId = docId;
     return newState;
   };

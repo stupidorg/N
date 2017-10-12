@@ -10,6 +10,7 @@ export function createEmptyDocument() {
   return {
     time: Date.now(),
     size: 0,
+    textContent: "",
     content: {
       type: "doc",
       content: [
@@ -20,4 +21,14 @@ export function createEmptyDocument() {
       ]
     }
   };
+}
+
+export function sliceStr(str, from, to) {
+  if (str.length <= from) return "";
+  if (str.length < to) return str.slice(from, to);
+  if (to) {
+    const newTo = Math.min(Math.max(str.indexOf(" ", to), to), str.length);
+    return str.slice(from, newTo) + (str.length > newTo ? "..." : "");
+  }
+  return str.slice(from);
 }

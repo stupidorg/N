@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { StateProvider, WithState } from "./State";
-import Editor from "../components/Editor";
 import TitleBar from "../components/TitleBar";
-import { updateRecentDoc } from "../actions";
+import Edit from "./Edit";
+import List from "./List";
 
 const Container = styled.div`
   display: flex;
@@ -21,13 +21,20 @@ module.exports = function App() {
           )}
         />
         <WithState
-          render={(state, update) => (
-            <Editor
-              key={state.recentDocId}
-              defaultValue={state.docs[state.recentDocId]}
-              onChange={value => update(updateRecentDoc(value))}
-            />
-          )}
+          render={(state, update) => {
+            switch (state.route) {
+              case "edit":
+                return <Edit state={state} update={update} />;
+                break;
+
+              case "list":
+                return <List state={state} update={update} />;
+                break;
+
+              default:
+                return <div>💩</div>;
+            }
+          }}
         />
       </Container>
     </StateProvider>

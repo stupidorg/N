@@ -16,12 +16,14 @@ export class StateProvider extends React.Component {
 
     this.state = {
       state: store.get("state") || this.getDefaultState()
+      // state: this.getDefaultState()
     };
   }
 
   getDefaultState() {
     const docId = uuidv4();
     return {
+      route: "edit",
       recentDocId: docId,
       docs: { [docId]: createEmptyDocument() }
     };
