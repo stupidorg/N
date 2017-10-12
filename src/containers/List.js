@@ -15,7 +15,7 @@ export default function List({ state, update }) {
         time: distanceInWordsToNow(new Date(doc.time), {
           addSuffix: true
         }),
-        title: title || "An Empty Document"
+        title: title || "Empty Document"
       };
     })
     .sort((a, b) => b.timeRaw - a.timeRaw);

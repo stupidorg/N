@@ -1,4 +1,4 @@
-import { uuidv4, createEmptyDocument } from "../utils";
+import { uuidv4, createEmptyDocument, isEmptyDoc } from "../utils";
 
 export function cloneState(state) {
   const newState = Object.assign({}, state);
@@ -16,9 +16,18 @@ export const updateRecentDoc = value =>
 export const createNewDoc = () =>
   function createNewDoc(state) {
     const newState = cloneState(state);
-    const docId = uuidv4();
-    newState.docs[docId] = createEmptyDocument();
-    newState.recentDocId = docId;
+    const emptyDocId = Object.keys(state.docs).find(docId =>
+      isEmptyDoc(state.docs[docId])
+    );
+
+    if (emptyDocId) {
+      newState.recentDocId = emptyDocId;
+    } else {
+      const docId = uuidv4();
+      newState.docs[docId] = createEmptyDocument();
+      newState.recentDocId = docId;
+    }
+
     newState.route = "edit";
     return newState;
   };

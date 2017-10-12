@@ -14,6 +14,8 @@ const EditorWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  padding-bottom: 8px;
+  box-sizing: border-box;
 
   & > div {
     height: 100%;
