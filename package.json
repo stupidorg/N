@@ -5,22 +5,18 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist",
+    "pack": "electron-packager ."
   },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
+  "keywords": ["Electron", "quick", "start", "tutorial", "demo"],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-packager": "^9.1.0"
   },
   "dependencies": {
     "@atlaskit/button": "^5.4.2",
