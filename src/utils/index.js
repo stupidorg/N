@@ -24,10 +24,11 @@ export function createEmptyDocument() {
 }
 
 export function isEmptyDoc(doc) {
-  return !Boolean(doc.textContent.length);
+  return !doc.textContent || !doc.textContent.length;
 }
 
 export function sliceStr(str, from, to) {
+  if (!str) return "";
   if (str.length <= from) return "";
   if (str.length < to) return str.slice(from, to);
   if (to) {
