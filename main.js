@@ -1,4 +1,6 @@
 const electron = require("electron");
+const defaultMenu = require('electron-default-menu');
+
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -14,6 +16,9 @@ const windowStateKeeper = require("electron-window-state");
 let mainWindow;
 
 function createWindow() {
+  const menu = defaultMenu(app, electron.shell);
+  electron.Menu.setApplicationMenu(electron.Menu.buildFromTemplate(menu));
+
   const mainWindowState = windowStateKeeper({
     defaultWidth: 350,
     defaultHeight: 420
