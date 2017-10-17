@@ -7,7 +7,8 @@
     "start": "electron .",
     "build": "babel src --out-dir dist",
     "pack": "electron-packager .",
-    "reduce-deps": "node ./scripts/reduce-dependencies.js"
+    "reduce-deps": "node ./scripts/reduce-dependencies.js",
+    "postinstall": "npm run reduce-deps"
   },
   "keywords": [
     "Electron",
