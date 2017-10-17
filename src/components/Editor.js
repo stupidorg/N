@@ -19,7 +19,7 @@ const EditorWrapper = styled.div`
 
   & > div {
     height: 100%;
-    padding: 0 28px;
+    padding: 8px 28px 0;
 
     & > div {
       height: 100%;
@@ -29,6 +29,10 @@ const EditorWrapper = styled.div`
   .ProseMirror {
     height: 100%;
     -webkit-app-region: no-drag;
+
+    table {
+      width: 100%;
+    }
   }
 `;
 
@@ -54,6 +58,7 @@ export default function Editor({ defaultValue, onChange }) {
               allowLists={true}
               allowTasksAndDecisions={true}
               allowTextFormatting={true}
+              allowTables={true}
               shouldFocus={true}
               contentTransformerProvider={contentTransformerProvider}
               placeholder="Write some text..."
