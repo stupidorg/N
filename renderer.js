@@ -7,3 +7,5 @@ const ReactDOM = require("react-dom");
 const App = require("./dist/containers/App");
 
 ReactDOM.render(React.createElement(App), document.getElementById("app"));
+
+console.log(`Renderer JavaScript Startup Time: ${performance.now() - global.startTime}ms`);
