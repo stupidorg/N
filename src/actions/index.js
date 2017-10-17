@@ -6,6 +6,24 @@ export function cloneState(state) {
   return newState;
 }
 
+export const deleteDoc = docId =>
+  function deleteDoc(state) {
+    const newState = cloneState(state);
+    newState.docs = Object.keys(newState.docs).reduce((docs, key) => {
+      if (key === docId) return docs;
+      docs[key] = newState.docs[key];
+      return docs;
+    }, {});
+
+    if (Object.keys(newState.docs).length) {
+      return newState;
+    }
+
+    const newStateWithDoc = createNewDoc()(newState);
+    const newDocId = Object.keys(newStateWithDoc.docs)[0];
+    return switchToEdit(newDocId)(newStateWithDoc);
+  };
+
 export const updateRecentDoc = value =>
   function updateRecentDoc(state) {
     const newState = cloneState(state);
