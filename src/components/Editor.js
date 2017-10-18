@@ -36,15 +36,11 @@ const EditorWrapper = styled.div`
   }
 `;
 
-const contentTransformerProvider = () => ({
-  encode(doc) {
-    return {
-      content: doc.toJSON(),
-      time: Date.now(),
-      textContent: doc.textContent,
-      size: doc.textContent.length
-    };
-  }
+const contentTransformer = (doc) => Promise.resolve({
+  content: doc.toJSON(),
+  time: Date.now(),
+  textContent: doc.textContent,
+  size: doc.textContent.length
 });
 
 export default function Editor({ defaultValue, onChange }) {
@@ -60,9 +56,8 @@ export default function Editor({ defaultValue, onChange }) {
               allowTextFormatting={true}
               allowTables={true}
               shouldFocus={true}
-              contentTransformerProvider={contentTransformerProvider}
               placeholder="Write some text..."
-              onChange={() => actions.getValue().then(onChange)}
+              onChange={({ state: { doc } }) => contentTransformer(doc).then(onChange)}
               defaultValue={defaultValue.content}
             />
           )}
