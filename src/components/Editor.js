@@ -33,15 +33,33 @@ const EditorWrapper = styled.div`
     table {
       width: 100%;
     }
+
+    & pre {
+      font-family: "SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono",
+        "Ubuntu Mono", Menlo, Courier, monospace;
+      background: #f4f5f7;
+      padding: 12px;
+      border-radius: 3px;
+    }
+
+    & .code,
+    & code {
+      padding: 2px 4px;
+      border-radius: 3px;
+      background: #f4f5f7;
+      font-size: 12px;
+      line-height: 1.4;
+    }
   }
 `;
 
-const contentTransformer = (doc) => Promise.resolve({
-  content: doc.toJSON(),
-  time: Date.now(),
-  textContent: doc.textContent,
-  size: doc.textContent.length
-});
+const contentTransformer = doc =>
+  Promise.resolve({
+    content: doc.toJSON(),
+    time: Date.now(),
+    textContent: doc.textContent,
+    size: doc.textContent.length
+  });
 
 export default function Editor({ defaultValue, onChange }) {
   return (
@@ -57,7 +75,8 @@ export default function Editor({ defaultValue, onChange }) {
               allowTables={true}
               shouldFocus={true}
               placeholder="Write some text..."
-              onChange={({ state: { doc } }) => contentTransformer(doc).then(onChange)}
+              onChange={({ state: { doc } }) =>
+                contentTransformer(doc).then(onChange)}
               defaultValue={defaultValue.content}
             />
           )}
