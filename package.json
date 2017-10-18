@@ -6,17 +6,11 @@
   "scripts": {
     "start": "electron .",
     "build": "babel src --out-dir dist",
-    "pack": "electron-packager . --overwrite",
+    "pack": "electron-packager . --overwrite --icon ./assets/icon.icns",
     "reduce-deps": "node ./scripts/reduce-dependencies.js",
     "postinstall": "npm run reduce-deps"
   },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
+  "keywords": ["Electron", "quick", "start", "tutorial", "demo"],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",

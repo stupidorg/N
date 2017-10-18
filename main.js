@@ -1,5 +1,5 @@
 const electron = require("electron");
-const defaultMenu = require('electron-default-menu');
+const defaultMenu = require("electron-default-menu");
 
 // Module to control application life.
 const app = electron.app;
