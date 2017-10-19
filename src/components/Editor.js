@@ -18,11 +18,16 @@ const EditorWrapper = styled.div`
   box-sizing: border-box;
 
   & > div {
-    height: 100%;
+    flex: 1;
     padding: 8px 28px 0;
 
     & > div {
       height: 100%;
+
+      /* Hide portal */
+      & > div:first-child {
+        display: none;
+      }
     }
   }
 
@@ -69,6 +74,7 @@ export default function Editor({ defaultValue, onChange }) {
           render={actions => (
             <FabricEditor
               appearance="chromeless"
+              allowHyperlinks={true}
               allowLists={true}
               allowTasksAndDecisions={true}
               allowTextFormatting={true}
