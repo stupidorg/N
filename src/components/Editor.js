@@ -32,6 +32,8 @@ const EditorWrapper = styled.div`
 
     table {
       width: 100%;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     & pre {
