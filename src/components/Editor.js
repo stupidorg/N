@@ -28,7 +28,6 @@ const EditorWrapper = styled.div`
 
   .ProseMirror {
     height: 100%;
-    -webkit-app-region: no-drag;
 
     table {
       width: 100%;
