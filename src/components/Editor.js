@@ -23,11 +23,6 @@ const EditorWrapper = styled.div`
 
     & > div {
       height: 100%;
-
-      /* Hide portal */
-      & > div:first-child {
-        display: none;
-      }
     }
   }
 
@@ -66,7 +61,7 @@ const contentTransformer = doc =>
     size: doc.textContent.length
   });
 
-export default function Editor({ defaultValue, onChange }) {
+export default function Editor({ defaultValue, onChange, popupsMountPoint }) {
   return (
     <EditorContext>
       <EditorWrapper>
@@ -84,6 +79,7 @@ export default function Editor({ defaultValue, onChange }) {
               onChange={({ state: { doc } }) =>
                 contentTransformer(doc).then(onChange)}
               defaultValue={defaultValue.content}
+              popupsMountPoint={popupsMountPoint}
             />
           )}
         />
