@@ -10,6 +10,7 @@ const TitleBarWrapper = styled.div`
   padding: 0 12px 12px 52px;
   display: flex;
   align-items: center;
+  -webkit-app-region: drag;
   pointer-events: none;
 `;
 
