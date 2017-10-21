@@ -11,7 +11,6 @@ const TitleBarWrapper = styled.div`
   display: flex;
   align-items: center;
   -webkit-app-region: drag;
-  pointer-events: none;
 `;
 
 const Center = styled.div`flex-grow: 1;`;
