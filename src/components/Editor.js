@@ -1,12 +1,20 @@
-import React from "react";
+import React, { PropTypes } from "react";
 import styled from "styled-components";
-import {
-  Editor as FabricEditor,
-  EditorContext,
-  WithEditorActions
-} from "@atlaskit/editor-core";
+import Chromeless from "@atlaskit/editor-core/dist/es5/editor/ui/Appearance/Chromeless";
+import { moveCursorToTheEnd } from "@atlaskit/editor-core/dist/es5/utils";
+import ProviderFactory from "@atlaskit/editor-core/dist/es5/providerFactory";
+import createEditor from "@atlaskit/editor-core/dist/es5/editor/create-editor/create-editor";
+import pastePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/paste";
+import basePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/base";
+import blockTypePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/block-type";
+import placeholderPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/placeholder";
+import listPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/lists";
+import tablesPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tables";
+import textFormattingPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/text-formatting";
+import hyperlinkPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/hyperlink";
+import tasksAndDecisionsPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tasks-and-decisions";
 
-const EditorWrapper = styled.div`
+const EditorStylesWrapper = styled.div`
   flex-grow: 1;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -62,29 +70,76 @@ const contentTransformer = doc =>
     size: doc.textContent.length
   });
 
-export default function Editor({ defaultValue, onChange, popupsMountPoint }) {
-  return (
-    <EditorContext>
-      <EditorWrapper>
-        <WithEditorActions
-          render={actions => (
-            <FabricEditor
-              appearance="chromeless"
-              allowHyperlinks={true}
-              allowLists={true}
-              allowTasksAndDecisions={true}
-              allowTextFormatting={true}
-              allowTables={true}
-              shouldFocus={true}
-              placeholder="Write some text..."
-              onChange={({ state: { doc } }) =>
-                contentTransformer(doc).then(onChange)}
-              defaultValue={defaultValue.content}
-              popupsMountPoint={popupsMountPoint}
-            />
-          )}
+export default class Editor extends React.Component {
+  static contextTypes = {
+    editorActions: PropTypes.object
+  };
+
+  state = { editor: {} };
+
+  constructor(props) {
+    super(props);
+    this.providerFactory = new ProviderFactory();
+  }
+
+  initEditor = place => {
+    if (!place) return;
+    const editor = createEditor(
+      place,
+      [
+        pastePlugin,
+        basePlugin,
+        blockTypePlugin,
+        placeholderPlugin,
+        listPlugin,
+        hyperlinkPlugin,
+        tablesPlugin,
+        textFormattingPlugin,
+        tasksAndDecisionsPlugin
+      ],
+      this.props,
+      this.providerFactory
+    );
+    this.registerEditorForActions(editor);
+    this.setState({ editor });
+
+    if (!editor.editorView.hasFocus()) {
+      editor.editorView.focus();
+    }
+
+    moveCursorToTheEnd(editor.editorView);
+  };
+
+  registerEditorForActions(editor) {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateRegisterEditor(
+        editor.editorView,
+        editor.contentTransformer
+      );
+    }
+  }
+
+  unregisterEditorFromActions() {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateUnregisterEditor();
+    }
+  }
+
+  render() {
+    const { editor } = this.state;
+    const { editorView, contentComponents, eventDispatcher } = editor;
+
+    return (
+      <EditorStylesWrapper>
+        <Chromeless
+          onUiReady={this.initEditor}
+          editorView={editorView}
+          providerFactory={this.providerFactory}
+          contentComponents={contentComponents}
+          eventDispatcher={eventDispatcher}
+          popupsMountPoint={this.props.popupsMountPoint}
         />
-      </EditorWrapper>
-    </EditorContext>
-  );
+      </EditorStylesWrapper>
+    );
+  }
 }
