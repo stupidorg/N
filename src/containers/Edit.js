@@ -5,7 +5,6 @@ import Editor from "../components/Editor";
 import { updateRecentDoc } from "../actions";
 
 const contentTransformer = doc => {
-  console.log(doc);
   return Promise.resolve({
     content: doc,
     time: Date.now(),
@@ -15,14 +14,13 @@ const contentTransformer = doc => {
 };
 
 export default function Edit({ state, update }) {
-  const popupsMountPoint = document.querySelector("#hidden-popups-mount-point");
+  // const popupsMountPoint = document.querySelector("#hidden-popups-mount-point");
   return (
     <EditorContext>
       <WithEditorActions
         render={actions => (
           <Editor
             key={state.recentDocId}
-            popupsMountPoint={popupsMountPoint}
             defaultValue={state.docs[state.recentDocId].content}
             placeholder="Write something..."
             contentTransformerProvider={() => ({ encode: contentTransformer })}

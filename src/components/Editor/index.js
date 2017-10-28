@@ -12,7 +12,7 @@ import listPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/lists";
 import tablesPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tables";
 import textFormattingPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/text-formatting";
 import hyperlinkPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/hyperlink";
-import tasksAndDecisionsPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tasks-and-decisions";
+import actionsPlugin from "./plugins/actions";
 
 const EditorStylesWrapper = styled.div`
   flex-grow: 1;
@@ -91,11 +91,11 @@ export default class Editor extends React.Component {
         basePlugin,
         blockTypePlugin,
         placeholderPlugin,
-        listPlugin,
-        hyperlinkPlugin,
-        tablesPlugin,
         textFormattingPlugin,
-        tasksAndDecisionsPlugin
+        hyperlinkPlugin,
+        listPlugin,
+        tablesPlugin,
+        actionsPlugin
       ],
       this.props,
       this.providerFactory
