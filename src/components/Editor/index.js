@@ -62,14 +62,6 @@ const EditorStylesWrapper = styled.div`
   }
 `;
 
-const contentTransformer = doc =>
-  Promise.resolve({
-    content: doc.toJSON(),
-    time: Date.now(),
-    textContent: doc.textContent,
-    size: doc.textContent.length
-  });
-
 export default class Editor extends React.Component {
   static contextTypes = {
     editorActions: PropTypes.object
@@ -109,6 +101,10 @@ export default class Editor extends React.Component {
 
     moveCursorToTheEnd(editor.editorView);
   };
+
+  componentWillUnmount() {
+    this.unregisterEditorFromActions();
+  }
 
   registerEditorForActions(editor) {
     if (this.context && this.context.editorActions) {
