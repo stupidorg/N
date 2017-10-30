@@ -5,8 +5,12 @@ import Editor from "../components/Editor";
 import { updateRecentDoc } from "../actions";
 
 const contentTransformer = doc => {
+  const title = doc.content.content[0]
+    ? doc.content.content[0].textContent
+    : "";
   return Promise.resolve({
-    content: doc,
+    title,
+    content: doc.toJSON(),
     time: Date.now(),
     textContent: doc.textContent,
     size: doc.textContent.length

@@ -46,7 +46,7 @@ export default class List extends React.Component {
     const items = Object.keys(appState.docs)
       .map(docId => {
         const doc = appState.docs[docId];
-        const title = sliceStr(doc.textContent, 0, 15);
+        const title = sliceStr(doc.title, 0, 25);
         return {
           id: docId,
           size: doc.size,
