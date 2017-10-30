@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import styled from "styled-components";
+import { Selection } from "prosemirror-state";
 import Chromeless from "@atlaskit/editor-core/dist/es5/editor/ui/Appearance/Chromeless";
 import { moveCursorToTheEnd } from "@atlaskit/editor-core/dist/es5/utils";
 import ProviderFactory from "@atlaskit/editor-core/dist/es5/providerFactory";
@@ -99,7 +100,16 @@ export default class Editor extends React.Component {
       editor.editorView.focus();
     }
 
-    moveCursorToTheEnd(editor.editorView);
+    if (this.props.selection) {
+      const selection = Selection.fromJSON(
+        editor.editorView.state.doc,
+        this.props.selection
+      );
+      const tr = editor.editorView.state.tr.setSelection(selection);
+      editor.editorView.dispatch(tr.scrollIntoView());
+    } else {
+      moveCursorToTheEnd(editor.editorView);
+    }
   };
 
   componentWillUnmount() {

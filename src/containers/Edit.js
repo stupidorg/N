@@ -20,19 +20,18 @@ const contentTransformer = doc => {
 export default function Edit({ state, update }) {
   // const popupsMountPoint = document.querySelector("#hidden-popups-mount-point");
   return (
-    <EditorContext>
-      <WithEditorActions
-        render={actions => (
-          <Editor
-            key={state.recentDocId}
-            defaultValue={state.docs[state.recentDocId].content}
-            placeholder="Write something..."
-            contentTransformerProvider={() => ({ encode: contentTransformer })}
-            onChange={() =>
-              actions.getValue().then(value => update(updateRecentDoc(value)))}
-          />
-        )}
-      />
-    </EditorContext>
+    <WithEditorActions
+      render={actions => (
+        <Editor
+          key={state.recentDocId}
+          defaultValue={state.docs[state.recentDocId].content}
+          selection={state.docs[state.recentDocId].selection}
+          placeholder="Write something..."
+          contentTransformerProvider={() => ({ encode: contentTransformer })}
+          onChange={() =>
+            actions.getValue().then(value => update(updateRecentDoc(value)))}
+        />
+      )}
+    />
   );
 }

@@ -1,5 +1,8 @@
 import { uuidv4, createEmptyDocument, isEmptyDoc } from "../utils";
 
+export const compose = (...fns) => state =>
+  fns.reverse().reduce((newState, fn) => fn(newState), state);
+
 export function cloneState(state) {
   const newState = Object.assign({}, state);
   newState.docs = Object.assign({}, state.docs);
@@ -31,6 +34,13 @@ export const updateRecentDoc = value =>
     return newState;
   };
 
+export const updateSelection = selection =>
+  function updateSelection(state) {
+    const newState = cloneState(state);
+    newState.docs[state.recentDocId].selection = selection;
+    return newState;
+  };
+
 export const createNewDoc = () =>
   function createNewDoc(state) {
     const newState = cloneState(state);
@@ -50,6 +60,9 @@ export const createNewDoc = () =>
     return newState;
   };
 
+export const updateSelectionAndCreateNewDoc = currentDocSelection =>
+  compose(createNewDoc(), updateSelection(currentDocSelection));
+
 export const switchTo = route =>
   function switchTo(state) {
     const newState = cloneState(state);
@@ -58,6 +71,9 @@ export const switchTo = route =>
   };
 
 export const switchToList = () => switchTo("list");
+
+export const updateSelectionAndSwitchToList = currentDocSelection =>
+  compose(updateSelection(currentDocSelection), switchToList());
 
 export const switchToEdit = docId =>
   function switchToEdit(state) {
