@@ -18,6 +18,11 @@ const TitleBarWrapper = styled.div`
 
 const Center = styled.div`flex-grow: 1;`;
 
+const getSelection = editorActions => {
+  const editorView = editorActions._privateGetEditorView();
+  return editorView && editorView.state && editorView.state.selection.toJSON();
+};
+
 export default function TitleBar({ onAction, editorActions }) {
   return (
     <TitleBarWrapper>
@@ -29,9 +34,7 @@ export default function TitleBar({ onAction, editorActions }) {
           iconBefore={<AddIcon size="small" label="some label" />}
           onClick={() =>
             onAction(
-              updateSelectionAndCreateNewDoc(
-                editorActions._privateGetEditorView().state.selection.toJSON()
-              )
+              updateSelectionAndCreateNewDoc(getSelection(editorActions))
             )}
         />
         <Button
@@ -40,9 +43,7 @@ export default function TitleBar({ onAction, editorActions }) {
           iconBefore={<ListIcon size="small" label="some label" />}
           onClick={() =>
             onAction(
-              updateSelectionAndSwitchToList(
-                editorActions._privateGetEditorView().state.selection.toJSON()
-              )
+              updateSelectionAndSwitchToList(getSelection(editorActions))
             )}
         />
       </ButtonGroup>
