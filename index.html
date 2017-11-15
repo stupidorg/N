@@ -31,9 +31,20 @@
   <div id="hidden-popups-mount-point" style="display: none"></div>
 
   <script>
+    // Prevent drag and drop from replacing whole document
+    document.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      return false;
+    });
+
+    document.addEventListener("drop", (e) => {
+      e.preventDefault();
+      return false;
+    });
+
     // You can also require other files to run in this process
     global.startTime = performance.now();
-    require('./renderer.js')
+    require("./renderer.js")
   </script>
 </body>
 

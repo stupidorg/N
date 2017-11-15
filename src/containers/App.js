@@ -22,10 +22,7 @@ module.exports = function App() {
             render={(state, update) => (
               <WithEditorActions
                 render={editorActions => (
-                  <TitleBar
-                    editorActions={editorActions}
-                    onAction={action => update(action)}
-                  />
+                  <TitleBar editorActions={editorActions} onAction={action => update(action)} />
                 )}
               />
             )}
