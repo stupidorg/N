@@ -1,0 +1,34 @@
+language: node_js
+
+cache:
+  directories:
+    - node_modules
+
+notifications:
+  email: false
+
+matrix:
+  include:
+    - os: osx
+
+node_js:
+  - "8"
+
+before_script:
+  - npm prune
+
+install:
+  - npm install
+
+script:
+  - npm run build
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then npm run pack; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then npm run dmg; fi
+
+deploy:
+  provider: releases
+  api_key: GITHUB_API_KEY
+  file: "N.dmg"
+  skip_cleanup: true
+  on:
+    tags: true
