@@ -2,12 +2,11 @@ import tasksAndDecisionsPlugin from "@atlaskit/editor-core/dist/es5/editor/plugi
 
 const actionsPlugin = {
   nodes() {
-    return tasksAndDecisionsPlugin
-      .nodes()
-      .filter(node => !node.name.startsWith("decision"));
+    return tasksAndDecisionsPlugin.nodes().filter(node => !node.name.startsWith("decision"));
   },
   pmPlugins() {
     return tasksAndDecisionsPlugin.pmPlugins();
   }
 };
+
 export default actionsPlugin;

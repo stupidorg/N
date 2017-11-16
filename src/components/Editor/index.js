@@ -14,6 +14,7 @@ import tablesPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tables";
 import textFormattingPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/text-formatting";
 import hyperlinkPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/hyperlink";
 import actionsPlugin from "./plugins/actions";
+import imagesPlugin from "./plugins/images";
 
 const EditorStylesWrapper = styled.div`
   flex-grow: 1;
@@ -45,8 +46,8 @@ const EditorStylesWrapper = styled.div`
     }
 
     & pre {
-      font-family: "SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono",
-        "Ubuntu Mono", Menlo, Courier, monospace;
+      font-family: "SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo,
+        Courier, monospace;
       background: #f4f5f7;
       padding: 12px;
       border-radius: 3px;
@@ -59,6 +60,11 @@ const EditorStylesWrapper = styled.div`
       background: #f4f5f7;
       font-size: 12px;
       line-height: 1.4;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
   }
 `;
@@ -85,6 +91,7 @@ export default class Editor extends React.Component {
         blockTypePlugin,
         placeholderPlugin,
         textFormattingPlugin,
+        imagesPlugin,
         hyperlinkPlugin,
         listPlugin,
         tablesPlugin,
@@ -101,10 +108,7 @@ export default class Editor extends React.Component {
     }
 
     if (this.props.selection) {
-      const selection = Selection.fromJSON(
-        editor.editorView.state.doc,
-        this.props.selection
-      );
+      const selection = Selection.fromJSON(editor.editorView.state.doc, this.props.selection);
       const tr = editor.editorView.state.tr.setSelection(selection);
       editor.editorView.dispatch(tr.scrollIntoView());
     } else {
