@@ -11,6 +11,10 @@ matrix:
   include:
     - os: osx
 
+branches:
+  except:
+  - /^build-\d{4}-.*$/
+
 node_js:
   - "8"
 
@@ -24,6 +28,7 @@ script:
   - npm run build
   - if [ "$TRAVIS_BRANCH" = "master" ]; then npm run pack; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then npm run dmg; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./scripts/create-tag.sh; fi
 
 deploy:
   provider: releases
