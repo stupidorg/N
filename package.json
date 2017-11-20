@@ -3,22 +3,37 @@
   "version": "0.0.0",
   "description": "A minimal Notes App",
   "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "babel src --out-dir dist",
-    "icon": "nicns --in ./assets/Icon1024.png --out ./assets/icon.icns",
-    "prepack": "npm run build && npm run icon",
-    "pack": "electron-packager . N --overwrite --icon ./assets/icon.icns",
-    "reduce-deps": "node ./scripts/reduce-dependencies.js",
-    "postinstall": "npm run reduce-deps"
+  "engines": {
+    "node": ">=8.0.0"
   },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+  "files": [
+    "index.html",
+    "main.js",
+    "renderer.js",
+    "dist/",
+    "assets/"
   ],
+  "scripts": {
+    "prebuild": "     rimraf dist",
+    "build": "        babel src --out-dir dist",
+    "icon": "         nicns --in ./assets/Icon1024.png --out ./assets/icon.icns",
+    "lint:staged": "  lint-staged",
+    "prepack": "      npm run build",
+    "pack": "         electron-packager . N --overwrite --icon ./assets/icon.icns --platform darwin",
+    "dmg": "          electron-installer-dmg ./N-darwin-x64/N.app N",
+    "postinstall": "  npm run reduce-deps",
+    "reduce-deps": "  node ./scripts/reduce-dependencies.js",
+    "start": "        electron ."
+  },
+  "pre-commit": [
+    "lint:staged"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -26,8 +41,13 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "electron": "~1.7.8",
+    "electron-installer-dmg": "^0.2.1",
     "electron-packager": "^9.1.0",
-    "node-icns": "0.0.4"
+    "lint-staged": "^5.0.0",
+    "node-icns": "0.0.4",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.8.2",
+    "rimraf": "^2.6.2"
   },
   "dependencies": {
     "@atlaskit/button": "^5.4.2",
