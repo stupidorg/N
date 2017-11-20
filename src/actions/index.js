@@ -37,16 +37,15 @@ export const updateRecentDoc = value =>
 export const updateSelection = selection =>
   function updateSelection(state) {
     const newState = cloneState(state);
-    newState.docs[state.recentDocId].selection = selection;
+    const doc = newState.docs[state.recentDocId];
+    if (doc) doc.selection = selection;
     return newState;
   };
 
 export const createNewDoc = () =>
   function createNewDoc(state) {
     const newState = cloneState(state);
-    const emptyDocId = Object.keys(state.docs).find(docId =>
-      isEmptyDoc(state.docs[docId])
-    );
+    const emptyDocId = Object.keys(state.docs).find(docId => isEmptyDoc(state.docs[docId]));
 
     if (emptyDocId) {
       newState.recentDocId = emptyDocId;
