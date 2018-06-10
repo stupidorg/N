@@ -3,10 +3,7 @@ import styled from "styled-components";
 import AddIcon from "@atlaskit/icon/glyph/add";
 import ListIcon from "@atlaskit/icon/glyph/list";
 import Button, { ButtonGroup } from "@atlaskit/button";
-import {
-  updateSelectionAndCreateNewDoc,
-  updateSelectionAndSwitchToList
-} from "../actions";
+import { updateSelectionAndCreateNewDoc, updateSelectionAndSwitchToList } from "../actions";
 
 const TitleBarWrapper = styled.div`
   height: 26px;
@@ -16,7 +13,9 @@ const TitleBarWrapper = styled.div`
   -webkit-app-region: drag;
 `;
 
-const Center = styled.div`flex-grow: 1;`;
+const Center = styled.div`
+  flex-grow: 1;
+`;
 
 const getSelection = editorActions => {
   const editorView = editorActions._privateGetEditorView();
@@ -32,19 +31,13 @@ export default function TitleBar({ onAction, editorActions }) {
           appearance="subtle-link"
           spacing="none"
           iconBefore={<AddIcon size="small" label="some label" />}
-          onClick={() =>
-            onAction(
-              updateSelectionAndCreateNewDoc(getSelection(editorActions))
-            )}
+          onClick={() => onAction(updateSelectionAndCreateNewDoc(getSelection(editorActions)))}
         />
         <Button
           appearance="subtle-link"
           spacing="none"
           iconBefore={<ListIcon size="small" label="some label" />}
-          onClick={() =>
-            onAction(
-              updateSelectionAndSwitchToList(getSelection(editorActions))
-            )}
+          onClick={() => onAction(updateSelectionAndSwitchToList(getSelection(editorActions)))}
         />
       </ButtonGroup>
     </TitleBarWrapper>

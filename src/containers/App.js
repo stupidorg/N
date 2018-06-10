@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import EditorContext from "@atlaskit/editor-core/dist/es5/editor/ui/EditorContext";
-import WithEditorActions from "@atlaskit/editor-core/dist/es5/editor/ui/WithEditorActions";
+import { EditorContext, WithEditorActions } from "@atlaskit/editor-core";
 import { StateProvider, WithState } from "./State";
 import TitleBar from "../components/TitleBar";
 import Edit from "./Edit";

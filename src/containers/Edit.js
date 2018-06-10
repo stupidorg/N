@@ -1,13 +1,10 @@
 import React from "react";
-import EditorContext from "@atlaskit/editor-core/dist/es5/editor/ui/EditorContext";
-import WithEditorActions from "@atlaskit/editor-core/dist/es5/editor/ui/WithEditorActions";
+import { EditorContext, WithEditorActions } from "@atlaskit/editor-core";
 import Editor from "../components/Editor";
 import { updateRecentDoc } from "../actions";
 
 const contentTransformer = doc => {
-  const title = doc.content.content[0]
-    ? doc.content.content[0].textContent
-    : "";
+  const title = doc.content.content[0] ? doc.content.content[0].textContent : "";
   return Promise.resolve({
     title,
     content: doc.toJSON(),
@@ -18,7 +15,6 @@ const contentTransformer = doc => {
 };
 
 export default function Edit({ state, update }) {
-  // const popupsMountPoint = document.querySelector("#hidden-popups-mount-point");
   return (
     <WithEditorActions
       render={actions => (
@@ -28,8 +24,7 @@ export default function Edit({ state, update }) {
           selection={state.docs[state.recentDocId].selection}
           placeholder="Write something..."
           contentTransformerProvider={() => ({ encode: contentTransformer })}
-          onChange={() =>
-            actions.getValue().then(value => update(updateRecentDoc(value)))}
+          onChange={() => actions.getValue().then(value => update(updateRecentDoc(value)))}
         />
       )}
     />

@@ -1,18 +1,14 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Selection } from "prosemirror-state";
-import Chromeless from "@atlaskit/editor-core/dist/es5/editor/ui/Appearance/Chromeless";
+import Chromeless from "@atlaskit/editor-core/dist/es5/ui/Appearance/Chromeless";
+import EditorContext from "@atlaskit/editor-core/dist/es5/ui/EditorContext";
+import { PortalProvider, PortalRenderer } from "@atlaskit/editor-core/dist/es5/ui/PortalProvider";
 import { moveCursorToTheEnd } from "@atlaskit/editor-core/dist/es5/utils";
-import ProviderFactory from "@atlaskit/editor-core/dist/es5/providerFactory";
-import createEditor from "@atlaskit/editor-core/dist/es5/editor/create-editor/create-editor";
-import pastePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/paste";
-import basePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/base";
-import blockTypePlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/block-type";
-import placeholderPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/placeholder";
-import listPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/lists";
-import tablesPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tables";
-import textFormattingPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/text-formatting";
-import hyperlinkPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/hyperlink";
+import { ProviderFactory } from "@atlaskit/editor-common";
+import ReactEditorView from "@atlaskit/editor-core/dist/es5/create-editor/ReactEditorView";
+import listPlugin from "@atlaskit/editor-core/dist/es5/plugins/lists";
 import actionsPlugin from "./plugins/actions";
 import imagesPlugin from "./plugins/images";
 
@@ -69,6 +65,12 @@ const EditorStylesWrapper = styled.div`
   }
 `;
 
+class ReactEditor extends ReactEditorView {
+  getPlugins() {
+    return super.getPlugins({}).concat([imagesPlugin, listPlugin, actionsPlugin]);
+  }
+}
+
 export default class Editor extends React.Component {
   static contextTypes = {
     editorActions: PropTypes.object
@@ -81,49 +83,28 @@ export default class Editor extends React.Component {
     this.providerFactory = new ProviderFactory();
   }
 
-  initEditor = place => {
-    if (!place) return;
-    const editor = createEditor(
-      place,
-      [
-        pastePlugin,
-        basePlugin,
-        blockTypePlugin,
-        placeholderPlugin,
-        textFormattingPlugin,
-        imagesPlugin,
-        hyperlinkPlugin,
-        listPlugin,
-        tablesPlugin,
-        actionsPlugin
-      ],
-      this.props,
-      this.providerFactory
-    );
+  onEditorCreated = editor => {
     this.registerEditorForActions(editor);
-    this.setState({ editor });
-
-    if (!editor.editorView.hasFocus()) {
-      editor.editorView.focus();
+    if (!editor.view.hasFocus()) {
+      editor.view.focus();
     }
 
     if (this.props.selection) {
-      const selection = Selection.fromJSON(editor.editorView.state.doc, this.props.selection);
-      const tr = editor.editorView.state.tr.setSelection(selection);
-      editor.editorView.dispatch(tr.scrollIntoView());
-    } else {
-      moveCursorToTheEnd(editor.editorView);
+      const selection = Selection.fromJSON(editor.view.state.doc, this.props.selection);
+      const tr = editor.view.state.tr.setSelection(selection);
+      editor.view.dispatch(tr.scrollIntoView());
     }
   };
 
-  componentWillUnmount() {
+  onEditorDestroyed = () => {
     this.unregisterEditorFromActions();
-  }
+  };
 
   registerEditorForActions(editor) {
     if (this.context && this.context.editorActions) {
       this.context.editorActions._privateRegisterEditor(
-        editor.editorView,
+        editor.view,
+        editor.eventDispatcher,
         editor.contentTransformer
       );
     }
@@ -141,14 +122,35 @@ export default class Editor extends React.Component {
 
     return (
       <EditorStylesWrapper>
-        <Chromeless
-          onUiReady={this.initEditor}
-          editorView={editorView}
-          providerFactory={this.providerFactory}
-          contentComponents={contentComponents}
-          eventDispatcher={eventDispatcher}
-          popupsMountPoint={this.props.popupsMountPoint}
-        />
+        <EditorContext editorActions={this.editorActions}>
+          <PortalProvider
+            render={portalProviderAPI => (
+              <React.Fragment>
+                <ReactEditor
+                  editorProps={{
+                    defaultValue: this.props.defaultValue
+                  }}
+                  portalProviderAPI={portalProviderAPI}
+                  providerFactory={this.providerFactory}
+                  onEditorCreated={this.onEditorCreated}
+                  onEditorDestroyed={this.onEditorDestroyed}
+                  render={({ editor, view, eventDispatcher, config }) => (
+                    <Chromeless
+                      editorDOMElement={editor}
+                      editorView={view}
+                      providerFactory={this.providerFactory}
+                      eventDispatcher={eventDispatcher}
+                      popupsMountPoint={this.props.popupsMountPoint}
+                      popupsBoundariesElement={document.body}
+                      contentComponents={config.contentComponents}
+                    />
+                  )}
+                />
+                <PortalRenderer portalProviderAPI={portalProviderAPI} />
+              </React.Fragment>
+            )}
+          />
+        </EditorContext>
       </EditorStylesWrapper>
     );
   }

@@ -1,4 +1,4 @@
-import tasksAndDecisionsPlugin from "@atlaskit/editor-core/dist/es5/editor/plugins/tasks-and-decisions";
+import tasksAndDecisionsPlugin from "@atlaskit/editor-core/dist/es5/plugins/tasks-and-decisions";
 
 const actionsPlugin = {
   nodes() {
