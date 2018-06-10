@@ -8,7 +8,6 @@ import { PortalProvider, PortalRenderer } from "@atlaskit/editor-core/dist/es5/u
 import { moveCursorToTheEnd } from "@atlaskit/editor-core/dist/es5/utils";
 import { ProviderFactory } from "@atlaskit/editor-common";
 import ReactEditorView from "@atlaskit/editor-core/dist/es5/create-editor/ReactEditorView";
-import listPlugin from "@atlaskit/editor-core/dist/es5/plugins/lists";
 import actionsPlugin from "./plugins/actions";
 import imagesPlugin from "./plugins/images";
 
@@ -41,23 +40,6 @@ const EditorStylesWrapper = styled.div`
       margin-right: 0;
     }
 
-    & pre {
-      font-family: "SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo,
-        Courier, monospace;
-      background: #f4f5f7;
-      padding: 12px;
-      border-radius: 3px;
-    }
-
-    & .code,
-    & code {
-      padding: 2px 4px;
-      border-radius: 3px;
-      background: #f4f5f7;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
     img {
       display: block;
       max-width: 100%;
@@ -67,7 +49,9 @@ const EditorStylesWrapper = styled.div`
 
 class ReactEditor extends ReactEditorView {
   getPlugins() {
-    return super.getPlugins({}).concat([imagesPlugin, listPlugin, actionsPlugin]);
+    return super
+      .getPlugins({ allowLists: true, allowCodeBlocks: true })
+      .concat([imagesPlugin, actionsPlugin]);
   }
 }
 
